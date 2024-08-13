@@ -1,16 +1,47 @@
 package com.ofss.main.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+
+@Entity
 public class Account{
-    private int account_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="account_id")
+    private int accountId;
+    @Column(name="is_approved")
     private boolean accountIsApproved;
+    @Column(name="account_type")
     private String accountType;
+    @Column(name="rate_of_interest")
     private float rateOfInterest;
+    @Column(name="opening_date")
     private String openingDate;
+    @Column(name="min_balance")
     private float minBalance;
+    @Column(name="current_balance")
     private float currentBalance;
+    @Column(name="overdraft_balance")
     private float overdraftBalance;
+    @Column(name="max_overdraft")
     private float maximumOverdraft;
+    @Column(name="customer_id")
     private int customerId;
+    @Transient
+    private BankCustomer bankCustomer;
+    @Transient
+    private float amount;
+    
+    public float getAmount() {
+        return amount;
+    }
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
     public Account SavingsAccount(float currentBalance, int customerId) {
         this.accountType = "Savings";
         this.rateOfInterest = 7;
@@ -33,10 +64,10 @@ public class Account{
 
     }
     public int getAccountId() {
-        return account_id;
+        return accountId;
     }
     public void setAccountId(int account_id) {
-        this.account_id = account_id;
+        this.accountId = account_id;
     }
     public boolean isAccountIsApproved() {
         return accountIsApproved;

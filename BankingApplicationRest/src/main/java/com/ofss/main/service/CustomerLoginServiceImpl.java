@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.ofss.main.domain.LoginDetails;
 import com.ofss.main.repository.CustomerLoginRepository;
-import com.ofss.main.repository.CustomerRegistration;
 
 @Service
 public class CustomerLoginServiceImpl implements CustomerLoginService{

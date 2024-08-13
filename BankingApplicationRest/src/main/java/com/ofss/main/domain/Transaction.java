@@ -1,12 +1,33 @@
 package com.ofss.main.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="transactions")
 public class Transaction {
+    @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="transaction_id")
     private int transactionId;
+    @Column(name="type")
     private String type;
+    @Column(name="timestamp")
+    @CreationTimestamp
     private String timestamp;
+    @Column(name="amount")
     private float amount;
+    @Column(name="dt_account")
     private int dtAccount;
+    @Column(name="cr_account")
     private int crAccount;
+    @Column(name="status")
     private String status;
     public Transaction(float amount, String type, int dtAccount,
             int crAccount) {
