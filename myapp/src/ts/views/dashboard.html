@@ -1,0 +1,47 @@
+<!--
+ Copyright (c) 2014, 2024, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+
+<!-- ACTIVITY 2 -->
+
+
+ <div class="oj-hybrid-padding">
+  <h1>ACTIVITY 2</h1>
+  <div>
+  <oj-c-input-text
+              id="text-input"
+              value="{{firstName}}"
+              label-hint="Enter first name"
+              label-edge="inside">
+  </oj-c-input-text>
+  <h3>Hey! <oj-bind-text value="[[firstName]]"></oj-bind-text></h3>
+  </div>
+  <div>
+    <h1>Input number demo</h1>
+    <oj-c-input-number
+                value="{{salary}}"
+                min = "0"
+                label-hint="Enter salary"></oj-c-input-number>
+                <h3>Hey!, you earn <oj-bind-text value="[[salary]]"></oj-bind-text></h3>
+  </div>
+  <div>
+    <h1>Clear icon demo</h1>
+    <oj-form-layout>
+      <oj-c-input-password
+        id="no-clear-icon"
+        value="{{valueNoClearIcon}}"
+        label-hint="no clear-icon attribute"></oj-c-input-password> 
+        
+        <oj-c-input-password
+        id="clear-icon-conditional"
+        value="{{valueClearIconConditional}}"
+        raw-value="{{rawValueClearIconConditional}}"
+        clear-icon="conditional"
+        label-hint="clear-icon='conditional'"></oj-c-input-password>
+
+    </oj-form-layout>
+
+  </div>
+
