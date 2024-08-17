@@ -5,40 +5,56 @@
  * as shown at https://oss.oracle.com/licenses/upl/
  * @ignore
  */
+import { Item } from "@oracle/oraclejet/ojdataprovider";
 import * as AccUtils from "../accUtils";
+import 'oj-c/button';
+import "ojs/ojtable";
+
+import { RESTDataProvider } from "ojs/ojrestdataprovider";
+
+type D = { id: number; name: string; username: string };
+type K = D["id"];
+
 class CustomersViewModel {
+    dataprovider: RESTDataProvider<K, D>;
+    keyAttributes = "id";
+    url = "https://jsonplaceholder.typicode.com/users";
+
 
   constructor() {
+      this.dataprovider = new RESTDataProvider({
+          keyAttributes: this.keyAttributes,
+          url: this.url,
 
+          transforms: {
+              fetchFirst: {
+                  request: async (options) => {
+                      const url = new URL(options.url);
+                      const { size, offset } = options.fetchParameters;
+                      url.searchParams.set("limit", String(size));
+                      url.searchParams.set("offset", String(offset));
+                      return new Request(url.href);
+                  },
+                  response: async ({ body }) => {
+                      console.log(body)
+                      let res = {'data':body}
+                      return res;
+                  },
+              },
+          },
+      });
+      
+      console.log(this.dataprovider);
   }
-
-  /**
-   * Optional ViewModel method invoked after the View is inserted into the
-   * document DOM.  The application can put logic that requires the DOM being
-   * attached here.
-   * This method might be called multiple times - after the View is created
-   * and inserted into the DOM and after the View is reconnected
-   * after being disconnected.
-   */
-  connected(): void {
-    AccUtils.announce("Customers page loaded.");
-    document.title = "Customers";
-    // implement further logic if needed
-  }
-
-  /**
-   * Optional ViewModel method invoked after the View is disconnected from the DOM.
-   */
-  disconnected(): void {
-    // implement if needed
-  }
-
-  /**
-   * Optional ViewModel method invoked after transition to the new View is complete.
-   * That includes any possible animation between the old and the new View.
-   */
-  transitionCompleted(): void {
-    // implement if needed
+  public handleClick = async (event: Event) => {
+    let response = await fetch(this.url);
+    let jsonData = await response.json();
+    console.log(jsonData);
+    this.dataprovider.mutate({
+      add: {
+        data : jsonData, keys : new Set(jsonData)
+      }
+    })
   }
 }
 

@@ -16,7 +16,7 @@
               label-hint="Enter first name"
               label-edge="inside">
   </oj-c-input-text>
-  <h3>Hey! <oj-bind-text value="[[firstName]]"></oj-bind-text></h3>
+  <h3>Hey! <oj-bind-text value="{{firstName}}"></oj-bind-text></h3>
   </div>
   <div>
     <h1>Input number demo</h1>
@@ -24,8 +24,21 @@
                 value="{{salary}}"
                 min = "0"
                 label-hint="Enter salary"></oj-c-input-number>
-                <h3>Hey!, you earn <oj-bind-text value="[[salary]]"></oj-bind-text></h3>
+                <h3>Hey!, you earn <oj-bind-text min=0 value="[[salary]]"></oj-bind-text></h3>
+                
   </div>
+
+  <div>
+    <oj-c-button id="button1" on-oj-action="[[handleClick]]" disabled="[[firstName()==null || firstName().trim()==='']]" label="Submit" ></oj-c-button>
+  </div>
+
+  <oj-bind-text value="[[city]]"></oj-bind-text>
+  <oj-c-input-text
+              id="text-input"
+              value="{{email}}"
+              label-hint="Email"
+              label-edge="inside">
+  </oj-c-input-text>
   <div>
     <h1>Clear icon demo</h1>
     <oj-form-layout>

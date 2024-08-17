@@ -4,8 +4,12 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <h1>Customers Content Area</h1>
+  <h1>REST DATA PROVIDER</h1>
+  <oj-c-button id="button1" on-oj-action="[[handleClick]]"  label="fetch" ></oj-c-button>
   <div>
-      To change the content of this section, you will make edits to the customers.html file located in the /ts/views folder.
+      <oj-table id="table" data="[[dataprovider]]"
+        columns='[{"headerText": "Id",
+      "field": "id", "id":"id"}]'>
+  </oj-table>
   </div>
 </div>
