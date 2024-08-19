@@ -5,41 +5,87 @@
  * as shown at https://oss.oracle.com/licenses/upl/
  * @ignore
  */
-import * as AccUtils from "../accUtils";
+import * as ko from "knockout";
+import "oj-c/input-text";
+import "ojs/ojknockout";
+import "oj-c/input-number";
+import "ojs/ojformlayout";
+import "oj-c/form-layout";
+import "oj-c/input-password";
+import 'oj-c/button';
+
+
+type BankCustomer = { 
+  fullName: string;
+  addressL1: string;
+  addressL2: string;
+  addressL3: string;
+  city: string;
+  state: string;
+  zip: number;
+  phone: number
+}
+
 class DashboardViewModel {
+  inputFullName: ko.Observable<string> | ko.Observable<any>;
+  inputAddressL1: ko.Observable<string> | ko.Observable<any>;
+  inputAddressL2: ko.Observable<string> | ko.Observable<any>;
+  inputAddressL3: ko.Observable<string> | ko.Observable<any>;
+  inputCity: ko.Observable<string> | ko.Observable<any>;
+  inputState: ko.Observable<string> | ko.Observable<any>;
+  inputZip: ko.Observable<number> | ko.Observable<any>;
+  inputPhone: ko.Observable<number> | ko.Observable<any>;
 
   constructor() {
-
+    this.inputFullName = ko.observable(null);
+    this.inputAddressL1 = ko.observable(null);
+    this.inputAddressL2 = ko.observable(null);
+    this.inputAddressL3 = ko.observable(null);
+    this.inputCity = ko.observable(null);
+    this.inputState = ko.observable(null);
+    this.inputZip = ko.observable(null);
+    this.inputPhone = ko.observable(null);
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is inserted into the
-   * document DOM.  The application can put logic that requires the DOM being
-   * attached here.
-   * This method might be called multiple times - after the View is created
-   * and inserted into the DOM and after the View is reconnected
-   * after being disconnected.
-   */
-  connected(): void {
-    AccUtils.announce("Dashboard page loaded.");
-    document.title = "Dashboard";
-    // implement further logic if needed
-  }
+  public handleClick = async (event: Event) => {
 
-  /**
-   * Optional ViewModel method invoked after the View is disconnected from the DOM.
-   */
-  disconnected(): void {
-    // implement if needed
-  }
+    let URL = "http://localhost:8080/registration/customer";
 
-  /**
-   * Optional ViewModel method invoked after transition to the new View is complete.
-   * That includes any possible animation between the old and the new View.
-   */
-  transitionCompleted(): void {
-    // implement if needed
-  }
+    const customer: BankCustomer = {
+      fullName: this.inputFullName(),
+      addressL1: this.inputAddressL1(),
+      addressL2: this.inputAddressL2(),
+      addressL3: this.inputAddressL3(),
+      city: this.inputCity(),
+      state: this.inputState(),
+      zip: this.inputZip(),
+      phone: this.inputPhone(),
+    };
+
+    console.log(customer);
+    const requestBody = JSON.stringify(customer);
+    console.log(requestBody);
+
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: requestBody,
+        mode: "cors",
+      });
+
+      if (response.ok) {
+        const addedRow = await response.json();
+        console.log("Added row:", addedRow);
+      } else {
+        console.error("Error adding row:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error adding row:", error);
+    }
+  };
 }
 
 export = DashboardViewModel;
