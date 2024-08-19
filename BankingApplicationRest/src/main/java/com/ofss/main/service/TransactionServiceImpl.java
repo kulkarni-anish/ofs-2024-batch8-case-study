@@ -1,5 +1,7 @@
 package com.ofss.main.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,9 @@ public class TransactionServiceImpl implements TransactionService{
             repository.save(transaction);
             return true;
         }
+    }
+    @Override
+    public List<Transaction> getAllTransactions() {
+        return (List<Transaction>) repository.findAll();
     }
 }

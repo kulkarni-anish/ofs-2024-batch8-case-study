@@ -1,5 +1,6 @@
 package com.ofss.main.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,11 @@ public class AccountServiceImpl implements AccountService{
             return account.get();
         }
         return null;
+    }
+
+    @Override
+    public List<Account> getAccounts(int customerId) {
+        return accountRepository.findAllByCustomerId(customerId);
     }
 
 }

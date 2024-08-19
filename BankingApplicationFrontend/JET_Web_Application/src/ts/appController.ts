@@ -60,11 +60,14 @@ class RootViewModel {
     }
 
     const navData = [
-      { path: "", redirect: "dashboard" },
+      { path: "", redirect: "registration" },
+      { path: "registration", detail: { label: "Registration", iconClass: "oj-ux-ico-contact-group" } },
+      { path: "login", detail: { label: "Login", iconClass: "oj-ux-ico-contact-group" } },
       { path: "dashboard", detail: { label: "Dashboard", iconClass: "oj-ux-ico-bar-chart" } },
-      { path: "incidents", detail: { label: "Incidents", iconClass: "oj-ux-ico-fire" } },
-      { path: "customers", detail: { label: "Customers", iconClass: "oj-ux-ico-contact-group" } },
+      { path: "transactions", detail: { label: "Transactions", iconClass: "oj-ux-ico-fire" } },
+      // { path: "customers", detail: { label: "Customers", iconClass: "oj-ux-ico-contact-group" } },
       { path: "about", detail: { label: "About", iconClass: "oj-ux-ico-information-s" } }
+      
     ];
     // router setup
     const router = new CoreRouter(navData, {
@@ -91,7 +94,7 @@ class RootViewModel {
     // header
 
     // application Name used in Branding Area
-    this.appName = ko.observable("App Name");
+    this.appName = ko.observable("Banking Application");
     // user Info used in Global Navigation area
 
     this.userLogin = ko.observable("john.hancock@oracle.com");

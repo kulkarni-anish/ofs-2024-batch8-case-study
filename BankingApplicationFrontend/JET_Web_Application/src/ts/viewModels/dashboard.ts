@@ -13,79 +13,173 @@ import "ojs/ojformlayout";
 import "oj-c/form-layout";
 import "oj-c/input-password";
 import 'oj-c/button';
+import "ojs/ojtable";
+
+import { RESTDataProvider } from "ojs/ojrestdataprovider";
 
 
-type BankCustomer = { 
-  fullName: string;
-  addressL1: string;
-  addressL2: string;
-  addressL3: string;
-  city: string;
-  state: string;
-  zip: number;
-  phone: number
+type Account = {
+  accountId: number;
+  accountIsApproved: boolean;
+  accountType: string;
+  rateOfInterest: number;
+  openingDate: string;
+  minBalance: number;
+  currentBalance: number;
+  overdraftBalance: number;
+  maximumOverdraft: number;
+  customerId: number;
 }
+type K = Account["accountId"];
 
 class DashboardViewModel {
-  inputFullName: ko.Observable<string> | ko.Observable<any>;
-  inputAddressL1: ko.Observable<string> | ko.Observable<any>;
-  inputAddressL2: ko.Observable<string> | ko.Observable<any>;
-  inputAddressL3: ko.Observable<string> | ko.Observable<any>;
-  inputCity: ko.Observable<string> | ko.Observable<any>;
-  inputState: ko.Observable<string> | ko.Observable<any>;
-  inputZip: ko.Observable<number> | ko.Observable<any>;
-  inputPhone: ko.Observable<number> | ko.Observable<any>;
+  inputAccountId: ko.Observable<number> | ko.Observable<any>;
+  inputAccountIsApproved: ko.Observable<boolean> | ko.Observable<any>;
+  inputAccountType: ko.Observable<string> | ko.Observable<any>;
+  inputRateOfInterest: ko.Observable<number> | ko.Observable<any>;
+  inputOpeningDate: ko.Observable<string> | ko.Observable<any>;
+  inputMinBalance: ko.Observable<number> | ko.Observable<any>;
+  inputCurrentBalance: ko.Observable<number> | ko.Observable<any>;
+  inputOverdraftBalance: ko.Observable<number> | ko.Observable<any>;
+  inputMaximumOverdraft: ko.Observable<number> | ko.Observable<any>;
+  inputCustomerId: ko.Observable<number> | ko.Observable<any>;
+  depamount: ko.Observable<number> | ko.Observable<any>;
+  withamount: ko.Observable<number> | ko.Observable<any>;
+
+
+
+  dataprovider: RESTDataProvider<K, Account>;
+    keyAttributes = "id";
+    url = "http://localhost:8080/accounts";
 
   constructor() {
-    this.inputFullName = ko.observable(null);
-    this.inputAddressL1 = ko.observable(null);
-    this.inputAddressL2 = ko.observable(null);
-    this.inputAddressL3 = ko.observable(null);
-    this.inputCity = ko.observable(null);
-    this.inputState = ko.observable(null);
-    this.inputZip = ko.observable(null);
-    this.inputPhone = ko.observable(null);
+    this.inputAccountId = ko.observable(null);
+    this.inputAccountIsApproved = ko.observable(null);
+    this.inputAccountType = ko.observable(null);
+    this.inputRateOfInterest = ko.observable(null);
+    this.inputOpeningDate = ko.observable(null);
+    this.inputMinBalance = ko.observable(null);
+    this.inputCurrentBalance = ko.observable(null);
+    this.inputOverdraftBalance = ko.observable(null);
+    this.inputMaximumOverdraft = ko.observable(null);
+    this.inputCustomerId = ko.observable(null);
+    this.depamount = ko.observable(null);
+    this.withamount = ko.observable(null);
+    this.dataprovider = new RESTDataProvider({
+      keyAttributes: this.keyAttributes,
+      url: this.url,
+
+      transforms: {
+          fetchFirst: {
+              request: async (options) => {
+                const url = new URL(options.url);
+                const { size, offset } = options.fetchParameters;
+                const customerId = sessionStorage.getItem('customerId');
+                if (customerId) {
+                  url.searchParams.set("customerId", customerId);
+                }
+                return new Request(url.href);
+              },
+              response: async ({ body }) => {
+                  console.log(body)
+                  let res = {'data':body}
+                  return res;
+              },
+          },
+      }
+    });
+    
   }
-
-  public handleClick = async (event: Event) => {
-
-    let URL = "http://localhost:8080/registration/customer";
-
-    const customer: BankCustomer = {
-      fullName: this.inputFullName(),
-      addressL1: this.inputAddressL1(),
-      addressL2: this.inputAddressL2(),
-      addressL3: this.inputAddressL3(),
-      city: this.inputCity(),
-      state: this.inputState(),
-      zip: this.inputZip(),
-      phone: this.inputPhone(),
-    };
-
-    console.log(customer);
-    const requestBody = JSON.stringify(customer);
-    console.log(requestBody);
+  public navigateToAccount = async (event: any) => {
+    const context: any = event.detail.context;
+    const accountId = context.data.accountId;
+    console.log(accountId)
 
     try {
-      const response = await fetch(URL, {
-        method: "POST",
+      const response = await fetch("http://localhost:8080/accounts/"+accountId, {
+        method: "GET",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-        body: requestBody,
         mode: "cors",
       });
 
       if (response.ok) {
-        const addedRow = await response.json();
-        console.log("Added row:", addedRow);
+        const res = await response.json();
+        this.inputAccountId(res["accountId"]);
+        this.inputAccountIsApproved(res["accountIsApproved"]);
+        this.inputAccountType(res["accountType"]);
+        this.inputRateOfInterest(res["rateOfInterest"]);
+        this.inputOpeningDate(res["openingDate"]);
+        this.inputMinBalance(res["minBalance"]);
+        this.inputCurrentBalance(res["currentBalance"]);
+        this.inputOverdraftBalance(res["overdraftBalance"]);
+        this.inputMaximumOverdraft(res["maximumOverdraft"]);
+        this.inputCustomerId(res["customerId"]);
+        sessionStorage.setItem('accountId', accountId);
+
       } else {
-        console.error("Error adding row:", response.status, response.statusText);
+        console.error("Error getting row:", response.status, response.statusText);
       }
     } catch (error) {
-      console.error("Error adding row:", error);
+      console.error("Error getting row:", error);
     }
   };
+
+
+  public deposit = async (event: any) => {
+    try {
+      const response = await fetch("http://localhost:8080/accounts/deposit", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({
+          accountId: sessionStorage.getItem("accountId"),
+          amount: this.depamount()
+        }),
+        mode: "cors",
+      });
+      if (response.ok) {
+        console.log("Deposit completed");
+        alert("Deposit completed");
+        this.dataprovider.refresh();
+      } else {
+        console.error("Error getting row:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error getting row:", error);
+    }
+  }
+
+  public withdraw = async (event: any) => {
+    try {
+      const response = await fetch("http://localhost:8080/accounts/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({
+          accountId: sessionStorage.getItem("accountId"),
+          amount: this.withamount()
+        }),
+        mode: "cors",
+      });
+      if (response.ok) {
+        console.log("Withdraw completed");
+        alert("Withdraw completed");
+        this.dataprovider.refresh();
+      } else {
+        console.error("Error getting row:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error getting row:", error);
+    }
+  }
+
+  public transactions = async (event: any) => {
+    
+  }
 }
 
 export = DashboardViewModel;

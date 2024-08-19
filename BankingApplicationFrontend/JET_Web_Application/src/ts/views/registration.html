@@ -1,0 +1,58 @@
+<!--
+ Copyright (c) 2014, 2024, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+
+ <!-- {
+  "customerId": 1,
+  "fullName": "anish",
+  "addressL1": "aa",
+  "addressL2": "aa",
+  "addressL3": "aa",
+  "city": "aa",
+  "state": "aa",
+  "zip": 1,
+  "phone": "22",
+  "cell": null,
+  "email": null,
+  "customerisApproved": true
+} -->
+<div class="oj-hybrid-padding">
+    <h1>Registration</h1>
+    <div id="form-container">
+      <oj-c-form-layout
+        id="myform"
+        columns="3">
+        <oj-c-input-text
+          id="fullName" label-hint="Full Name"
+          label-edge="inside" value="{{inputFullName}}" required="true"></oj-c-input-text>
+        <oj-c-input-text
+          id="addressL1" label-hint="Address L1"
+          label-edge="inside" value="{{inputAddressL1}}" required="true"></oj-c-input-text>
+        <oj-c-input-text
+          id="addressL2" label-hint="Address L2"
+          label-edge="inside" value="{{inputAddressL2}}"></oj-c-input-text>
+        <oj-c-input-text
+          id="addressL3" label-hint="address L3"
+          label-edge="inside" value="{{inputAddressL3}}"></oj-c-input-text>
+        <oj-c-input-text
+          id="city" label-hint="City"
+          label-edge="inside" value="{{inputCity}}"></oj-c-input-text>
+        <oj-c-input-text
+          id="state" label-hint="State"
+          label-edge="inside" value="{{inputState}}"></oj-c-input-text>
+        <oj-c-input-text
+          id="zip" label-hint="Zip"
+          label-edge="inside" value="{{inputZip}}"></oj-c-input-text>
+        <oj-c-input-text
+          id="phone" label-hint="Phone"
+          label-edge="inside" value="{{inputPhone}}" required="true"></oj-c-input-text>
+              
+              
+        </oj-c-form-layout>
+        <oj-c-button id="button1" on-oj-action="[[handleClick]]" label="Submit" ></oj-c-button>
+        
+  
+    </div>
+  </div>

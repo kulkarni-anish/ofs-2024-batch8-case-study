@@ -1,5 +1,7 @@
 package com.ofss.main.service;
 
+import java.util.List;
+
 import com.ofss.main.domain.Account;
 
 public interface AccountService {
@@ -8,4 +10,5 @@ public interface AccountService {
     boolean deposit(int account_id, float amount);
     boolean withdraw(int account_id, float amount);
     Account getBalances(int account_id);
+    List<Account> getAccounts(int customerId);
 }

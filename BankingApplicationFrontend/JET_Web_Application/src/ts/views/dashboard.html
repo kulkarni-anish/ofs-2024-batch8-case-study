@@ -4,55 +4,57 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 
- <!-- {
-  "customerId": 1,
-  "fullName": "anish",
-  "addressL1": "aa",
-  "addressL2": "aa",
-  "addressL3": "aa",
-  "city": "aa",
-  "state": "aa",
-  "zip": 1,
-  "phone": "22",
-  "cell": null,
-  "email": null,
-  "customerisApproved": true
-} -->
 <div class="oj-hybrid-padding">
-  <h1>Registration</h1>
-  <div id="form-container">
-    <oj-c-form-layout
-      id="myform"
-      columns="3">
-      <oj-c-input-text
-        id="fullName" label-hint="Full Name"
-        label-edge="inside" value="{{inputFullName}}" required="true"></oj-c-input-text>
-      <oj-c-input-text
-        id="addressL1" label-hint="Address L1"
-        label-edge="inside" value="{{inputAddressL1}}" required="true"></oj-c-input-text>
-      <oj-c-input-text
-        id="addressL2" label-hint="Address L2"
-        label-edge="inside" value="{{inputAddressL2}}"></oj-c-input-text>
-      <oj-c-input-text
-        id="addressL3" label-hint="address L3"
-        label-edge="inside" value="{{inputAddressL3}}"></oj-c-input-text>
-      <oj-c-input-text
-        id="city" label-hint="City"
-        label-edge="inside" value="{{inputCity}}"></oj-c-input-text>
-      <oj-c-input-text
-        id="state" label-hint="State"
-        label-edge="inside" value="{{inputState}}"></oj-c-input-text>
-      <oj-c-input-text
-        id="zip" label-hint="Zip"
-        label-edge="inside" value="{{inputZip}}"></oj-c-input-text>
-      <oj-c-input-text
-        id="phone" label-hint="Phone"
-        label-edge="inside" value="{{inputPhone}}" required="true"></oj-c-input-text>
-            
-            
-      </oj-c-form-layout>
-      <oj-c-button id="button1" on-oj-action="[[handleClick]]" label="Submit" ></oj-c-button>
-      
+  <h1>Accounts</h1>
+  <!-- <oj-c-button id="button1" on-oj-action="[[handleClick]]"  label="fetch" ></oj-c-button> -->
+  <div>
+    <oj-table id="table" data="[[dataprovider]]"
+    columns='[{"headerText": "Account Id",
+    "field": "accountId"},
+   {"headerText": "Account Type",
+    "field": "accountType"},
+   {"headerText": "Current Balance",
+    "field": "currentBalance"},
+    {"headerText": "Overdraft Balance",
+    "field": "overdraftBalance"},
+    {"headerText": "Maximum Overdraft",
+    "field": "maximumOverdraft"}]'
+    on-oj-row-action="[[navigateToAccount]]">
+</oj-table> 
+
+
 
   </div>
+  <div>
+    Account Id : <oj-bind-text value="[[inputAccountId]]"></oj-bind-text><br>
+    Account Is Approved : <oj-bind-text value="[[inputAccountIsApproved]]"></oj-bind-text><br>
+    Account Type : <oj-bind-text value="[[inputAccountType]]"></oj-bind-text><br>
+    Rate Of Interest : <oj-bind-text value="[[inputRateOfInterest]]"></oj-bind-text><br>
+    Opening Date : <oj-bind-text value="[[inputOpeningDate]]"></oj-bind-text><br>
+    Min Balance : <oj-bind-text value="[[inputMinBalance]]"></oj-bind-text><br>
+    Current Balance : <oj-bind-text value="[[inputCurrentBalance]]"></oj-bind-text><br>
+    Overdraft Balance : <oj-bind-text value="[[inputOverdraftBalance]]"></oj-bind-text><br>
+    Maximum Overdraft : <oj-bind-text value="[[inputMaximumOverdraft]]"></oj-bind-text><br>
+    Customer Id : <oj-bind-text value="[[inputCustomerId]]"></oj-bind-text><br>
+  </div>
+
+  <h3>Transfer money</h3>
+  <oj-c-input-number
+    value="{{depamount}}"
+    min = "0"
+    label-hint="Enter amount"></oj-c-input-number>
+
+    <oj-c-button id="button1" on-oj-action="[[deposit]]"  label="deposit" ></oj-c-button>
+<br>
+  <oj-c-input-number
+    value="{{withamount}}"
+    min = "0"
+    label-hint="Enter amount"></oj-c-input-number>
+
+    <oj-c-button id="button2" on-oj-action="[[withdraw]]"  label="withdraw" ></oj-c-button>
+
+</div>
+
+<div>
+  <oj-c-button id="button3" on-oj-action="[[transactions]]"  label="View transactions" ></oj-c-button>
 </div>
